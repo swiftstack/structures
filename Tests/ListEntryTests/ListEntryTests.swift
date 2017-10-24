@@ -1,23 +1,23 @@
-import XCTest
+import Test
 @testable import ListEntry
 
-class ListEntryTests: XCTestCase {
+class ListEntryTests: TestCase {
     func testList() {
         var head = UnsafeMutablePointer<ListEntry>.allocate(payload: 0)
         defer { head.deallocate() }
-        XCTAssertNotNil(head)
+        assertNotNil(head)
     }
 
     func testEmpty() {
         var head = UnsafeMutablePointer<ListEntry>.allocate(payload: 0)
         defer { head.deallocate() }
-        XCTAssertTrue(head.isEmpty)
+        assertTrue(head.isEmpty)
 
         let c = Container(id: 1)
-        XCTAssertTrue(c.entry.isEmpty)
+        assertTrue(c.entry.isEmpty)
 
         head.insert(c.entry)
-        XCTAssertFalse(c.entry.isEmpty)
+        assertFalse(c.entry.isEmpty)
     }
 
     func testInitialization() {
@@ -27,12 +27,12 @@ class ListEntryTests: XCTestCase {
 
         head.insert(container.entry)
 
-        XCTAssert(head.next == container.entry)
-        XCTAssert(head.prev == container.entry)
-        XCTAssert(container.entry.next == head)
-        XCTAssert(container.entry.prev == head)
+        assertEqual(head.next, container.entry)
+        assertEqual(head.prev, container.entry)
+        assertEqual(container.entry.next, head)
+        assertEqual(container.entry.prev, head)
 
-        XCTAssert(head.next.pointee.payload == container.id)
+        assertEqual(head.next.pointee.payload, container.id)
     }
 
     func testInsert() {
@@ -43,14 +43,14 @@ class ListEntryTests: XCTestCase {
         head.insert(first.entry)
         head.insert(second.entry)
 
-        XCTAssert(head.next == second.entry)
-        XCTAssert(head.next.next == first.entry)
+        assertEqual(head.next, second.entry)
+        assertEqual(head.next.next, first.entry)
 
-        XCTAssert(head.prev == first.entry)
-        XCTAssert(head.prev.prev == second.entry)
+        assertEqual(head.prev, first.entry)
+        assertEqual(head.prev.prev, second.entry)
 
-        XCTAssert(head.next.payload == 2)
-        XCTAssert(head.prev.payload == 1)
+        assertEqual(head.next.payload, 2)
+        assertEqual(head.prev.payload, 1)
     }
 
     func testAppend() {
@@ -61,14 +61,14 @@ class ListEntryTests: XCTestCase {
         head.append(first.entry)
         head.append(second.entry)
 
-        XCTAssert(head.next == first.entry)
-        XCTAssert(head.next.pointee.next == second.entry)
+        assertEqual(head.next, first.entry)
+        assertEqual(head.next.next, second.entry)
 
-        XCTAssert(head.prev == second.entry)
-        XCTAssert(head.prev.pointee.prev == first.entry)
+        assertEqual(head.prev, second.entry)
+        assertEqual(head.prev.prev, first.entry)
 
-        XCTAssert(head.next.pointee.payload == 1)
-        XCTAssert(head.prev.pointee.payload == 2)
+        assertEqual(head.next.payload, 1)
+        assertEqual(head.prev.payload, 2)
     }
 
     func testRemove() {
@@ -78,43 +78,43 @@ class ListEntryTests: XCTestCase {
 
         head.insert(container.entry)
 
-        XCTAssertFalse(head.isEmpty)
-        XCTAssertFalse(container.entry.isEmpty)
+        assertFalse(head.isEmpty)
+        assertFalse(container.entry.isEmpty)
 
         container.entry.remove()
 
-        XCTAssertTrue(head.isEmpty)
-        XCTAssertTrue(container.entry.isEmpty)
+        assertTrue(head.isEmpty)
+        assertTrue(container.entry.isEmpty)
     }
 
     func testFirst() {
         var head = UnsafeMutablePointer<ListEntry>.allocate(payload: 0)
         defer { head.deallocate() }
-        XCTAssertNil(head.first)
+        assertNil(head.first)
 
         let items = [Container](head: head, count: 2)
         defer { items.deallocate() }
 
         guard let first = head.first else {
-            XCTFail("first item is nil")
+            fail("first item is nil")
             return
         }
-        XCTAssertEqual(first.payload, 1)
+        assertEqual(first.payload, 1)
     }
 
     func testLast() {
         var head = UnsafeMutablePointer<ListEntry>.allocate(payload: 0)
         defer { head.deallocate() }
-        XCTAssertNil(head.last)
+        assertNil(head.last)
 
         let items = [Container](head: head, count: 2)
         defer { items.deallocate() }
 
         guard let last = head.last else {
-            XCTFail("last item is nil")
+            fail("last item is nil")
             return
         }
-        XCTAssertEqual(last.pointee.payload, 2)
+        assertEqual(last.pointee.payload, 2)
     }
 
     func testRemoveFirst() {
@@ -126,9 +126,9 @@ class ListEntryTests: XCTestCase {
         let removedFirst = head.removeFirst()
         let removedSecond = head.removeFirst()
 
-        XCTAssertTrue(removedFirst.pointee.payload == 1)
-        XCTAssertTrue(removedSecond.pointee.payload == 2)
-        XCTAssertTrue(head.isEmpty)
+        assertEqual(removedFirst.pointee.payload, 1)
+        assertEqual(removedSecond.pointee.payload, 2)
+        assertTrue(head.isEmpty)
     }
 
     func testRemoveLast() {
@@ -140,9 +140,9 @@ class ListEntryTests: XCTestCase {
         let removedSecond = head.removeLast()
         let removedFirst = head.removeLast()
 
-        XCTAssertTrue(removedSecond.pointee.payload == 2)
-        XCTAssertTrue(removedFirst.pointee.payload == 1)
-        XCTAssertTrue(head.isEmpty)
+        assertEqual(removedSecond.pointee.payload, 2)
+        assertEqual(removedFirst.pointee.payload, 1)
+        assertTrue(head.isEmpty)
     }
 
     func testPopFirst() {
@@ -154,11 +154,11 @@ class ListEntryTests: XCTestCase {
         var id = 0
         while let item = head.popFirst() {
             id += 1
-            XCTAssertTrue(item.pointee.payload == id)
+            assertTrue(item.pointee.payload == id)
         }
 
-        XCTAssertEqual(id, 10)
-        XCTAssertTrue(head.isEmpty)
+        assertEqual(id, 10)
+        assertTrue(head.isEmpty)
     }
 
     func testPopLast() {
@@ -169,11 +169,11 @@ class ListEntryTests: XCTestCase {
 
         var id = 10
         while let item = head.popLast() {
-            XCTAssertTrue(item.pointee.payload == id)
+            assertTrue(item.pointee.payload == id)
             id -= 1
         }
 
-        XCTAssertEqual(id, 0)
-        XCTAssertTrue(head.isEmpty)
+        assertEqual(id, 0)
+        assertTrue(head.isEmpty)
     }
 }

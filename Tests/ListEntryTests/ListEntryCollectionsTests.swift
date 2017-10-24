@@ -1,7 +1,7 @@
-import XCTest
+import Test
 @testable import ListEntry
 
-class ListEntryCollectionsTests: XCTestCase {
+class ListEntryCollectionsTests: TestCase {
     func testSequence() {
         var head = UnsafeMutablePointer<ListEntry>.allocate(payload: 0)
         defer { head.deallocate() }
@@ -12,10 +12,10 @@ class ListEntryCollectionsTests: XCTestCase {
         var i = 0
         for item in head.pointee {
             i += 1
-            XCTAssert(item.pointee.payload == i)
+            assertEqual(item.pointee.payload, i)
         }
 
-        XCTAssertEqual(i, 10)
+        assertEqual(i, 10)
     }
 
     func testCollection() {
@@ -29,11 +29,11 @@ class ListEntryCollectionsTests: XCTestCase {
         var index = head.pointee.startIndex
         while index != head.pointee.endIndex {
             i += 1
-            XCTAssert(head.pointee[index].pointee.payload == i)
+            assertEqual(head.pointee[index].pointee.payload, i)
             index = head.pointee.index(after: index)
         }
 
-        XCTAssertEqual(i, 10)
+        assertEqual(i, 10)
     }
 
     func testBidirectionalCollection() {
@@ -46,12 +46,12 @@ class ListEntryCollectionsTests: XCTestCase {
         var i = 10
         var index = head.pointee.index(before: head.pointee.endIndex)
         while index != head.pointee.endIndex {
-            XCTAssert(head.pointee[index].pointee.payload == i)
+            assertEqual(head.pointee[index].pointee.payload, i)
             index = head.pointee.index(before: index)
             i -= 1
         }
 
-        XCTAssertEqual(i, 0)
+        assertEqual(i, 0)
     }
 
     func testEmptySequence() {
@@ -63,7 +63,7 @@ class ListEntryCollectionsTests: XCTestCase {
             i += 1
         }
 
-        XCTAssertEqual(i, 0)
+        assertEqual(i, 0)
     }
 
     func testEmptyCollection() {
@@ -75,7 +75,7 @@ class ListEntryCollectionsTests: XCTestCase {
             i += 1
         }
 
-        XCTAssertEqual(i, 0)
+        assertEqual(i, 0)
     }
 
     func testCount() {
@@ -85,7 +85,7 @@ class ListEntryCollectionsTests: XCTestCase {
         let items = [Container](head: head, count: 10)
         defer { items.deallocate() }
 
-        XCTAssertEqual(head.count, 10)
+        assertEqual(head.count, 10)
     }
 
     func testSlice() {
@@ -99,12 +99,12 @@ class ListEntryCollectionsTests: XCTestCase {
 
         var id = 10
         while let last = slice.popLast() {
-            XCTAssert(last.id == id)
+            assertEqual(last.id, id)
             id -= 1
         }
 
-        XCTAssertEqual(id, 0)
-        XCTAssertTrue(slice.isEmpty)
-        XCTAssertFalse(head.isEmpty)
+        assertEqual(id, 0)
+        assertTrue(slice.isEmpty)
+        assertFalse(head.isEmpty)
     }
 }
