@@ -61,11 +61,6 @@ extension UnsafeMutablePointer where Pointee: ListEntryProtocol {
         return pointer
     }
 
-    public func deallocate() {
-        remove()
-        self.deallocate(capacity: 1)
-    }
-
     public func remove() {
         prev.next = next
         next.prev = prev
