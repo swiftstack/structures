@@ -12,10 +12,10 @@ class ListEntryCollectionsTests: TestCase {
         var i = 0
         for item in head.pointee {
             i += 1
-            assertEqual(item.pointee.payload, i)
+            expect(item.pointee.payload == i)
         }
 
-        assertEqual(i, 10)
+        expect(i == 10)
     }
 
     func testCollection() {
@@ -29,11 +29,11 @@ class ListEntryCollectionsTests: TestCase {
         var index = head.pointee.startIndex
         while index != head.pointee.endIndex {
             i += 1
-            assertEqual(head.pointee[index].pointee.payload, i)
+            expect(head.pointee[index].pointee.payload == i)
             index = head.pointee.index(after: index)
         }
 
-        assertEqual(i, 10)
+        expect(i == 10)
     }
 
     func testBidirectionalCollection() {
@@ -46,12 +46,12 @@ class ListEntryCollectionsTests: TestCase {
         var i = 10
         var index = head.pointee.index(before: head.pointee.endIndex)
         while index != head.pointee.endIndex {
-            assertEqual(head.pointee[index].pointee.payload, i)
+            expect(head.pointee[index].pointee.payload == i)
             index = head.pointee.index(before: index)
             i -= 1
         }
 
-        assertEqual(i, 0)
+        expect(i == 0)
     }
 
     func testEmptySequence() {
@@ -63,7 +63,7 @@ class ListEntryCollectionsTests: TestCase {
             i += 1
         }
 
-        assertEqual(i, 0)
+        expect(i == 0)
     }
 
     func testEmptyCollection() {
@@ -75,7 +75,7 @@ class ListEntryCollectionsTests: TestCase {
             i += 1
         }
 
-        assertEqual(i, 0)
+        expect(i == 0)
     }
 
     func testCount() {
@@ -85,7 +85,7 @@ class ListEntryCollectionsTests: TestCase {
         let items = [Container](head: head, count: 10)
         defer { items.deallocate() }
 
-        assertEqual(head.count, 10)
+        expect(head.count == 10)
     }
 
     func testSlice() {
@@ -99,12 +99,12 @@ class ListEntryCollectionsTests: TestCase {
 
         var id = 10
         while let last = slice.popLast() {
-            assertEqual(last.id, id)
+            expect(last.id == id)
             id -= 1
         }
 
-        assertEqual(id, 0)
-        assertTrue(slice.isEmpty)
-        assertFalse(head.isEmpty)
+        expect(id == 0)
+        expect(slice.isEmpty)
+        expect(!head.isEmpty)
     }
 }

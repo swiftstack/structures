@@ -3,21 +3,20 @@ import Test
 
 class ListEntryTests: TestCase {
     func testList() {
-        var head = UnsafeMutablePointer<ListEntry>.allocate(payload: 0)
-        defer { head.deallocate() }
-        assertNotNil(head)
+        let head = UnsafeMutablePointer<ListEntry>.allocate(payload: 0)
+        head.deallocate()
     }
 
     func testEmpty() {
         var head = UnsafeMutablePointer<ListEntry>.allocate(payload: 0)
         defer { head.deallocate() }
-        assertTrue(head.isEmpty)
+        expect(head.isEmpty)
 
         let c = Container(id: 1)
-        assertTrue(c.entry.isEmpty)
+        expect(c.entry.isEmpty)
 
         head.insert(c.entry)
-        assertFalse(c.entry.isEmpty)
+        expect(!c.entry.isEmpty)
     }
 
     func testInitialization() {
@@ -27,12 +26,12 @@ class ListEntryTests: TestCase {
 
         head.insert(container.entry)
 
-        assertEqual(head.next, container.entry)
-        assertEqual(head.prev, container.entry)
-        assertEqual(container.entry.next, head)
-        assertEqual(container.entry.prev, head)
+        expect(head.next == container.entry)
+        expect(head.prev == container.entry)
+        expect(container.entry.next == head)
+        expect(container.entry.prev == head)
 
-        assertEqual(head.next.pointee.payload, container.id)
+        expect(head.next.pointee.payload == container.id)
     }
 
     func testInsert() {
@@ -43,14 +42,14 @@ class ListEntryTests: TestCase {
         head.insert(first.entry)
         head.insert(second.entry)
 
-        assertEqual(head.next, second.entry)
-        assertEqual(head.next.next, first.entry)
+        expect(head.next == second.entry)
+        expect(head.next.next == first.entry)
 
-        assertEqual(head.prev, first.entry)
-        assertEqual(head.prev.prev, second.entry)
+        expect(head.prev == first.entry)
+        expect(head.prev.prev == second.entry)
 
-        assertEqual(head.next.payload, 2)
-        assertEqual(head.prev.payload, 1)
+        expect(head.next.payload == 2)
+        expect(head.prev.payload == 1)
     }
 
     func testAppend() {
@@ -61,14 +60,14 @@ class ListEntryTests: TestCase {
         head.append(first.entry)
         head.append(second.entry)
 
-        assertEqual(head.next, first.entry)
-        assertEqual(head.next.next, second.entry)
+        expect(head.next == first.entry)
+        expect(head.next.next == second.entry)
 
-        assertEqual(head.prev, second.entry)
-        assertEqual(head.prev.prev, first.entry)
+        expect(head.prev == second.entry)
+        expect(head.prev.prev == first.entry)
 
-        assertEqual(head.next.payload, 1)
-        assertEqual(head.prev.payload, 2)
+        expect(head.next.payload == 1)
+        expect(head.prev.payload == 2)
     }
 
     func testRemove() {
@@ -78,19 +77,19 @@ class ListEntryTests: TestCase {
 
         head.insert(container.entry)
 
-        assertFalse(head.isEmpty)
-        assertFalse(container.entry.isEmpty)
+        expect(!head.isEmpty)
+        expect(!container.entry.isEmpty)
 
         container.entry.remove()
 
-        assertTrue(head.isEmpty)
-        assertTrue(container.entry.isEmpty)
+        expect(head.isEmpty)
+        expect(container.entry.isEmpty)
     }
 
     func testFirst() {
         var head = UnsafeMutablePointer<ListEntry>.allocate(payload: 0)
         defer { head.deallocate() }
-        assertNil(head.first)
+        expect(head.first == nil)
 
         let items = [Container](head: head, count: 2)
         defer { items.deallocate() }
@@ -99,13 +98,13 @@ class ListEntryTests: TestCase {
             fail("first item is nil")
             return
         }
-        assertEqual(first.payload, 1)
+        expect(first.payload == 1)
     }
 
     func testLast() {
         var head = UnsafeMutablePointer<ListEntry>.allocate(payload: 0)
         defer { head.deallocate() }
-        assertNil(head.last)
+        expect(head.last == nil)
 
         let items = [Container](head: head, count: 2)
         defer { items.deallocate() }
@@ -114,7 +113,7 @@ class ListEntryTests: TestCase {
             fail("last item is nil")
             return
         }
-        assertEqual(last.pointee.payload, 2)
+        expect(last.pointee.payload == 2)
     }
 
     func testRemoveFirst() {
@@ -126,9 +125,9 @@ class ListEntryTests: TestCase {
         let removedFirst = head.removeFirst()
         let removedSecond = head.removeFirst()
 
-        assertEqual(removedFirst.pointee.payload, 1)
-        assertEqual(removedSecond.pointee.payload, 2)
-        assertTrue(head.isEmpty)
+        expect(removedFirst.pointee.payload == 1)
+        expect(removedSecond.pointee.payload == 2)
+        expect(head.isEmpty)
     }
 
     func testRemoveLast() {
@@ -140,9 +139,9 @@ class ListEntryTests: TestCase {
         let removedSecond = head.removeLast()
         let removedFirst = head.removeLast()
 
-        assertEqual(removedSecond.pointee.payload, 2)
-        assertEqual(removedFirst.pointee.payload, 1)
-        assertTrue(head.isEmpty)
+        expect(removedSecond.pointee.payload == 2)
+        expect(removedFirst.pointee.payload == 1)
+        expect(head.isEmpty)
     }
 
     func testPopFirst() {
@@ -154,11 +153,11 @@ class ListEntryTests: TestCase {
         var id = 0
         while let item = head.popFirst() {
             id += 1
-            assertTrue(item.pointee.payload == id)
+            expect(item.pointee.payload == id)
         }
 
-        assertEqual(id, 10)
-        assertTrue(head.isEmpty)
+        expect(id == 10)
+        expect(head.isEmpty)
     }
 
     func testPopLast() {
@@ -169,11 +168,11 @@ class ListEntryTests: TestCase {
 
         var id = 10
         while let item = head.popLast() {
-            assertTrue(item.pointee.payload == id)
+            expect(item.pointee.payload == id)
             id -= 1
         }
 
-        assertEqual(id, 0)
-        assertTrue(head.isEmpty)
+        expect(id == 0)
+        expect(head.isEmpty)
     }
 }
