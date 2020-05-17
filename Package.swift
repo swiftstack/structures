@@ -2,7 +2,7 @@
 import PackageDescription
 
 let package = Package(
-    name: "LinkedList",
+    name: "Structures",
     products: [
         .library(name: "LinkedList", targets: ["ListEntry"])
     ],
