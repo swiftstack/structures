@@ -11,11 +11,30 @@ let package = Package(
     ],
     targets: [
         .target(name: "ListEntry"),
-        .testTarget(
-            name: "ListEntryTests",
-            dependencies: ["ListEntry", "Test"])
     ]
 )
+
+// MARK: - tests
+
+testTarget("ListEntry") { test in
+    test("ListEntry")
+    test("ListEntryCollections")
+}
+
+func testTarget(_ target: String, task: ((String) -> Void) -> Void) {
+    task { test in addTest(target: target, name: test) }
+}
+
+func addTest(target: String, name: String) {
+    package.targets.append(
+        .executableTarget(
+            name: "Tests/\(target)/\(name)",
+            dependencies: [.init(stringLiteral: target), "Test"],
+            path: "Tests/\(target)/\(name)",
+            swiftSettings: [
+                .unsafeFlags(["-Xfrontend", "-enable-experimental-concurrency"])
+            ]))
+}
 
 // MARK: - custom package source
 
