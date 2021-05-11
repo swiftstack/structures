@@ -32,6 +32,7 @@ func addTest(target: String, name: String) {
             dependencies: [.init(stringLiteral: target), "Test"],
             path: "Tests/\(target)/\(name)",
             swiftSettings: [
+                .unsafeFlags(["-Xfrontend", "-disable-availability-checking"]),
                 .unsafeFlags(["-Xfrontend", "-enable-experimental-concurrency"])
             ]))
 }
