@@ -4,10 +4,10 @@ import PackageDescription
 let package = Package(
     name: "Structures",
     products: [
-        .library(name: "LinkedList", targets: ["ListEntry"])
+        .library(name: "LinkedList", targets: ["ListEntry"]),
     ],
     dependencies: [
-        .package(name: "Test")
+        .package(name: "Test"),
     ],
     targets: [
         .target(name: "ListEntry"),
