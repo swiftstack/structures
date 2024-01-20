@@ -17,9 +17,19 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "ListEntry"),
+            name: "ListEntry",
+            swiftSettings: swift6),
     ]
 )
+
+let swift6: [SwiftSetting] = [
+    .enableUpcomingFeature("ConciseMagicFile"),
+    .enableUpcomingFeature("ForwardTrailingClosures"),
+    .enableUpcomingFeature("ExistentialAny"),
+    .enableUpcomingFeature("StrictConcurrency"),
+    .enableUpcomingFeature("ImplicitOpenExistentials"),
+    .enableUpcomingFeature("BareSlashRegexLiterals"),
+]
 
 // MARK: - tests
 
@@ -40,7 +50,8 @@ func addTest(target: String, name: String) {
                 .target(name: target),
                 .product(name: "Test", package: "test"),
             ],
-            path: "Tests/\(target)/\(name)"))
+            path: "Tests/\(target)/\(name)",
+            swiftSettings: swift6))
 }
 
 // MARK: - custom package source
