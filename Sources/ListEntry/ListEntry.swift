@@ -132,7 +132,7 @@ extension UnsafeMutablePointer where Pointee: ListEntryProtocol {
 
     // NOTE:
     // default implementation is broken
-    public var count: Int{
+    public var count: Int {
         var count = 0
         var current = self.next
         while current != self {
