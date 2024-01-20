@@ -8,13 +8,16 @@ let package = Package(
         .macOS(.v13),
     ],
     products: [
-        .library(name: "LinkedList", targets: ["ListEntry"]),
+        .library(
+            name: "LinkedList",
+            targets: ["ListEntry"]),
     ],
     dependencies: [
         .package(name: "Test"),
     ],
     targets: [
-        .target(name: "ListEntry"),
+        .target(
+            name: "ListEntry"),
     ]
 )
 
@@ -33,7 +36,10 @@ func addTest(target: String, name: String) {
     package.targets.append(
         .executableTarget(
             name: "Tests/\(target)/\(name)",
-            dependencies: [.init(stringLiteral: target), "Test"],
+            dependencies: [
+                .target(name: target),
+                .product(name: "Test", package: "test"),
+            ],
             path: "Tests/\(target)/\(name)"))
 }
 
@@ -79,6 +85,6 @@ extension Package.Dependency {
     static func package(name: String, source: Source) -> Package.Dependency {
         return source == .local
             ? .package(name: name, path: source.url(for: name))
-            : .package(name: name, url: source.url(for: name), .branch("dev"))
+            : .package(url: source.url(for: name), branch: "dev")
     }
 }
