@@ -1,12 +1,12 @@
 import Test
 @testable import ListEntry
 
-test.case("List") {
+test("List") {
     let head = UnsafeMutablePointer<ListEntry>.allocate(payload: 0)
     head.deallocate()
 }
 
-test.case("Empty") {
+test("Empty") {
     let head = UnsafeMutablePointer<ListEntry>.allocate(payload: 0)
     defer { head.deallocate() }
     expect(head.isEmpty)
@@ -18,7 +18,7 @@ test.case("Empty") {
     expect(!c.entry.isEmpty)
 }
 
-test.case("Initialization") {
+test("Initialization") {
     let head = UnsafeMutablePointer<ListEntry>.allocate(payload: 0)
     defer { head.deallocate() }
     let container = Container(id: 1)
@@ -33,7 +33,7 @@ test.case("Initialization") {
     expect(head.next.pointee.payload == container.id)
 }
 
-test.case("Insert") {
+test("Insert") {
     let head = UnsafeMutablePointer<ListEntry>.allocate(payload: 0)
     defer { head.deallocate() }
     let first = Container(id: 1)
@@ -51,7 +51,7 @@ test.case("Insert") {
     expect(head.prev.payload == 1)
 }
 
-test.case("Append") {
+test("Append") {
     let head = UnsafeMutablePointer<ListEntry>.allocate(payload: 0)
     defer { head.deallocate() }
     let first = Container(id: 1)
@@ -69,7 +69,7 @@ test.case("Append") {
     expect(head.prev.payload == 2)
 }
 
-test.case("Remove") {
+test("Remove") {
     let head = UnsafeMutablePointer<ListEntry>.allocate(payload: 0)
     defer { head.deallocate() }
     let container = Container(id: 1)
@@ -85,7 +85,7 @@ test.case("Remove") {
     expect(container.entry.isEmpty)
 }
 
-test.case("First") {
+test("First") {
     let head = UnsafeMutablePointer<ListEntry>.allocate(payload: 0)
     defer { head.deallocate() }
     expect(head.first == nil)
@@ -100,7 +100,7 @@ test.case("First") {
     expect(first.payload == 1)
 }
 
-test.case("Last") {
+test("Last") {
     let head = UnsafeMutablePointer<ListEntry>.allocate(payload: 0)
     defer { head.deallocate() }
     expect(head.last == nil)
@@ -115,7 +115,7 @@ test.case("Last") {
     expect(last.pointee.payload == 2)
 }
 
-test.case("RemoveFirst") {
+test("RemoveFirst") {
     let head = UnsafeMutablePointer<ListEntry>.allocate(payload: 0)
     defer { head.deallocate() }
     let items = [Container](head: head, count: 2)
@@ -129,7 +129,7 @@ test.case("RemoveFirst") {
     expect(head.isEmpty)
 }
 
-test.case("RemoveLast") {
+test("RemoveLast") {
     let head = UnsafeMutablePointer<ListEntry>.allocate(payload: 0)
     defer { head.deallocate() }
     let items = [Container](head: head, count: 2)
@@ -143,7 +143,7 @@ test.case("RemoveLast") {
     expect(head.isEmpty)
 }
 
-test.case("PopFirst") {
+test("PopFirst") {
     let head = UnsafeMutablePointer<ListEntry>.allocate(payload: 0)
     defer { head.deallocate() }
     let items = [Container](head: head, count: 10)
@@ -159,7 +159,7 @@ test.case("PopFirst") {
     expect(head.isEmpty)
 }
 
-test.case("PopLast") {
+test("PopLast") {
     let head = UnsafeMutablePointer<ListEntry>.allocate(payload: 0)
     defer { head.deallocate() }
     let items = [Container](head: head, count: 10)
@@ -175,4 +175,4 @@ test.case("PopLast") {
     expect(head.isEmpty)
 }
 
-test.run()
+await run()

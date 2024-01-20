@@ -1,7 +1,7 @@
 import Test
 @testable import ListEntry
 
-test.case("Sequence") {
+test("Sequence") {
     let head = UnsafeMutablePointer<ListEntry>.allocate(payload: 0)
     defer { head.deallocate() }
 
@@ -17,7 +17,7 @@ test.case("Sequence") {
     expect(i == 10)
 }
 
-test.case("Collection") {
+test("Collection") {
     let head = UnsafeMutablePointer<ListEntry>.allocate(payload: 0)
     defer { head.deallocate() }
 
@@ -35,7 +35,7 @@ test.case("Collection") {
     expect(i == 10)
 }
 
-test.case("BidirectionalCollection") {
+test("BidirectionalCollection") {
     let head = UnsafeMutablePointer<ListEntry>.allocate(payload: 0)
     defer { head.deallocate() }
 
@@ -53,7 +53,7 @@ test.case("BidirectionalCollection") {
     expect(i == 0)
 }
 
-test.case("EmptySequence") {
+test("EmptySequence") {
     let head = UnsafeMutablePointer<ListEntry>.allocate(payload: 0)
     defer { head.deallocate() }
 
@@ -65,7 +65,7 @@ test.case("EmptySequence") {
     expect(i == 0)
 }
 
-test.case("EmptyCollection") {
+test("EmptyCollection") {
     let head = UnsafeMutablePointer<ListEntry>.allocate(payload: 0)
     defer { head.deallocate() }
 
@@ -77,7 +77,7 @@ test.case("EmptyCollection") {
     expect(i == 0)
 }
 
-test.case("Count") {
+test("Count") {
     let head = UnsafeMutablePointer<ListEntry>.allocate(payload: 0)
     defer { head.deallocate() }
 
@@ -87,7 +87,7 @@ test.case("Count") {
     expect(head.count == 10)
 }
 
-test.case("Slice") {
+test("Slice") {
     let head = UnsafeMutablePointer<ListEntry>.allocate(payload: 0)
     defer { head.deallocate() }
 
@@ -107,4 +107,4 @@ test.case("Slice") {
     expect(!head.isEmpty)
 }
 
-test.run()
+await run()
