@@ -1,7 +1,8 @@
-import Test
+import Testing
 @testable import ListEntry
 
-test("Sequence") {
+@Test("Sequence")
+func sequence() async throws {
     let head = UnsafeMutablePointer<ListEntry>.allocate(payload: 0)
     defer { head.deallocate() }
 
@@ -11,13 +12,14 @@ test("Sequence") {
     var i = 0
     for item in head.pointee {
         i += 1
-        expect(item.pointee.payload == i)
+        #expect(item.pointee.payload == i)
     }
 
-    expect(i == 10)
+    #expect(i == 10)
 }
 
-test("Collection") {
+@Test("Collection")
+func collection() async throws {
     let head = UnsafeMutablePointer<ListEntry>.allocate(payload: 0)
     defer { head.deallocate() }
 
@@ -28,14 +30,15 @@ test("Collection") {
     var index = head.pointee.startIndex
     while index != head.pointee.endIndex {
         i += 1
-        expect(head.pointee[index].pointee.payload == i)
+        #expect(head.pointee[index].pointee.payload == i)
         index = head.pointee.index(after: index)
     }
 
-    expect(i == 10)
+    #expect(i == 10)
 }
 
-test("BidirectionalCollection") {
+@Test("BidirectionalCollection")
+func bidirectionalCollection() async throws {
     let head = UnsafeMutablePointer<ListEntry>.allocate(payload: 0)
     defer { head.deallocate() }
 
@@ -45,15 +48,16 @@ test("BidirectionalCollection") {
     var i = 10
     var index = head.pointee.index(before: head.pointee.endIndex)
     while index != head.pointee.endIndex {
-        expect(head.pointee[index].pointee.payload == i)
+        #expect(head.pointee[index].pointee.payload == i)
         index = head.pointee.index(before: index)
         i -= 1
     }
 
-    expect(i == 0)
+    #expect(i == 0)
 }
 
-test("EmptySequence") {
+@Test("EmptySequence")
+func emptySequence() async throws {
     let head = UnsafeMutablePointer<ListEntry>.allocate(payload: 0)
     defer { head.deallocate() }
 
@@ -62,10 +66,11 @@ test("EmptySequence") {
         i += 1
     }
 
-    expect(i == 0)
+    #expect(i == 0)
 }
 
-test("EmptyCollection") {
+@Test("EmptyCollection")
+func emptyCollection() async throws {
     let head = UnsafeMutablePointer<ListEntry>.allocate(payload: 0)
     defer { head.deallocate() }
 
@@ -74,20 +79,22 @@ test("EmptyCollection") {
         i += 1
     }
 
-    expect(i == 0)
+    #expect(i == 0)
 }
 
-test("Count") {
+@Test("Count")
+func count() async throws {
     let head = UnsafeMutablePointer<ListEntry>.allocate(payload: 0)
     defer { head.deallocate() }
 
     let items = [Container](head: head, count: 10)
     defer { items.deallocate() }
 
-    expect(head.count == 10)
+    #expect(head.count == 10)
 }
 
-test("Slice") {
+@Test("Slice")
+func slice() async throws {
     let head = UnsafeMutablePointer<ListEntry>.allocate(payload: 0)
     defer { head.deallocate() }
 
@@ -98,13 +105,11 @@ test("Slice") {
 
     var id = 10
     while let last = slice.popLast() {
-        expect(last.id == id)
+        #expect(last.id == id)
         id -= 1
     }
 
-    expect(id == 0)
-    expect(slice.isEmpty)
-    expect(!head.isEmpty)
+    #expect(id == 0)
+    #expect(slice.isEmpty)
+    #expect(!head.isEmpty)
 }
-
-await run()

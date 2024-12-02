@@ -1,39 +1,43 @@
-import Test
+import Testing
 @testable import ListEntry
 
-test("List") {
+@Test("List")
+func list() async throws {
     let head = UnsafeMutablePointer<ListEntry>.allocate(payload: 0)
     head.deallocate()
 }
 
-test("Empty") {
+@Test("Empty")
+func empty() async throws {
     let head = UnsafeMutablePointer<ListEntry>.allocate(payload: 0)
     defer { head.deallocate() }
-    expect(head.isEmpty)
+    #expect(head.isEmpty)
 
     let c = Container(id: 1)
-    expect(c.entry.isEmpty)
+    #expect(c.entry.isEmpty)
 
     head.insert(c.entry)
-    expect(!c.entry.isEmpty)
+    #expect(!c.entry.isEmpty)
 }
 
-test("Initialization") {
+@Test("Initialization")
+func initialization() async throws {
     let head = UnsafeMutablePointer<ListEntry>.allocate(payload: 0)
     defer { head.deallocate() }
     let container = Container(id: 1)
 
     head.insert(container.entry)
 
-    expect(head.next == container.entry)
-    expect(head.prev == container.entry)
-    expect(container.entry.next == head)
-    expect(container.entry.prev == head)
+    #expect(head.next == container.entry)
+    #expect(head.prev == container.entry)
+    #expect(container.entry.next == head)
+    #expect(container.entry.prev == head)
 
-    expect(head.next.pointee.payload == container.id)
+    #expect(head.next.pointee.payload == container.id)
 }
 
-test("Insert") {
+@Test("Insert")
+func insert() async throws {
     let head = UnsafeMutablePointer<ListEntry>.allocate(payload: 0)
     defer { head.deallocate() }
     let first = Container(id: 1)
@@ -41,17 +45,18 @@ test("Insert") {
     head.insert(first.entry)
     head.insert(second.entry)
 
-    expect(head.next == second.entry)
-    expect(head.next.next == first.entry)
+    #expect(head.next == second.entry)
+    #expect(head.next.next == first.entry)
 
-    expect(head.prev == first.entry)
-    expect(head.prev.prev == second.entry)
+    #expect(head.prev == first.entry)
+    #expect(head.prev.prev == second.entry)
 
-    expect(head.next.payload == 2)
-    expect(head.prev.payload == 1)
+    #expect(head.next.payload == 2)
+    #expect(head.prev.payload == 1)
 }
 
-test("Append") {
+@Test("Append")
+func append() async throws {
     let head = UnsafeMutablePointer<ListEntry>.allocate(payload: 0)
     defer { head.deallocate() }
     let first = Container(id: 1)
@@ -59,63 +64,61 @@ test("Append") {
     head.append(first.entry)
     head.append(second.entry)
 
-    expect(head.next == first.entry)
-    expect(head.next.next == second.entry)
+    #expect(head.next == first.entry)
+    #expect(head.next.next == second.entry)
 
-    expect(head.prev == second.entry)
-    expect(head.prev.prev == first.entry)
+    #expect(head.prev == second.entry)
+    #expect(head.prev.prev == first.entry)
 
-    expect(head.next.payload == 1)
-    expect(head.prev.payload == 2)
+    #expect(head.next.payload == 1)
+    #expect(head.prev.payload == 2)
 }
 
-test("Remove") {
+@Test("Remove")
+func remove() async throws {
     let head = UnsafeMutablePointer<ListEntry>.allocate(payload: 0)
     defer { head.deallocate() }
     let container = Container(id: 1)
 
     head.insert(container.entry)
 
-    expect(!head.isEmpty)
-    expect(!container.entry.isEmpty)
+    #expect(!head.isEmpty)
+    #expect(!container.entry.isEmpty)
 
     container.entry.remove()
 
-    expect(head.isEmpty)
-    expect(container.entry.isEmpty)
+    #expect(head.isEmpty)
+    #expect(container.entry.isEmpty)
 }
 
-test("First") {
+@Test("First")
+func first() async throws {
     let head = UnsafeMutablePointer<ListEntry>.allocate(payload: 0)
     defer { head.deallocate() }
-    expect(head.first == nil)
+    #expect(head.first == nil)
 
     let items = [Container](head: head, count: 2)
     defer { items.deallocate() }
 
-    guard let first = head.first else {
-        fail("first item is nil")
-        return
-    }
-    expect(first.payload == 1)
+    let first = try #require(head.first)
+    #expect(first.payload == 1)
 }
 
-test("Last") {
+@Test("Last")
+func last() async throws {
     let head = UnsafeMutablePointer<ListEntry>.allocate(payload: 0)
     defer { head.deallocate() }
-    expect(head.last == nil)
+    #expect(head.last == nil)
 
     let items = [Container](head: head, count: 2)
     defer { items.deallocate() }
 
-    guard let last = head.last else {
-        fail("last item is nil")
-        return
-    }
-    expect(last.pointee.payload == 2)
+    let last = try #require(head.last)
+    #expect(last.pointee.payload == 2)
 }
 
-test("RemoveFirst") {
+@Test("RemoveFirst")
+func removeFirst() async throws {
     let head = UnsafeMutablePointer<ListEntry>.allocate(payload: 0)
     defer { head.deallocate() }
     let items = [Container](head: head, count: 2)
@@ -124,12 +127,13 @@ test("RemoveFirst") {
     let removedFirst = head.removeFirst()
     let removedSecond = head.removeFirst()
 
-    expect(removedFirst.pointee.payload == 1)
-    expect(removedSecond.pointee.payload == 2)
-    expect(head.isEmpty)
+    #expect(removedFirst.pointee.payload == 1)
+    #expect(removedSecond.pointee.payload == 2)
+    #expect(head.isEmpty)
 }
 
-test("RemoveLast") {
+@Test("RemoveLast")
+func removeLast() async throws {
     let head = UnsafeMutablePointer<ListEntry>.allocate(payload: 0)
     defer { head.deallocate() }
     let items = [Container](head: head, count: 2)
@@ -138,12 +142,13 @@ test("RemoveLast") {
     let removedSecond = head.removeLast()
     let removedFirst = head.removeLast()
 
-    expect(removedSecond.pointee.payload == 2)
-    expect(removedFirst.pointee.payload == 1)
-    expect(head.isEmpty)
+    #expect(removedSecond.pointee.payload == 2)
+    #expect(removedFirst.pointee.payload == 1)
+    #expect(head.isEmpty)
 }
 
-test("PopFirst") {
+@Test("PopFirst")
+func popFirst() async throws {
     let head = UnsafeMutablePointer<ListEntry>.allocate(payload: 0)
     defer { head.deallocate() }
     let items = [Container](head: head, count: 10)
@@ -152,14 +157,15 @@ test("PopFirst") {
     var id = 0
     while let item = head.popFirst() {
         id += 1
-        expect(item.pointee.payload == id)
+        #expect(item.pointee.payload == id)
     }
 
-    expect(id == 10)
-    expect(head.isEmpty)
+    #expect(id == 10)
+    #expect(head.isEmpty)
 }
 
-test("PopLast") {
+@Test("PopLast")
+func popLast() async throws {
     let head = UnsafeMutablePointer<ListEntry>.allocate(payload: 0)
     defer { head.deallocate() }
     let items = [Container](head: head, count: 10)
@@ -167,12 +173,10 @@ test("PopLast") {
 
     var id = 10
     while let item = head.popLast() {
-        expect(item.pointee.payload == id)
+        #expect(item.pointee.payload == id)
         id -= 1
     }
 
-    expect(id == 0)
-    expect(head.isEmpty)
+    #expect(id == 0)
+    #expect(head.isEmpty)
 }
-
-await run()
