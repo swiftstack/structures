@@ -1,4 +1,4 @@
-// swift-tools-version:5.9
+// swift-tools-version:6.0
 import PackageDescription
 
 let package = Package(
@@ -14,8 +14,7 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "ListEntry",
-            swiftSettings: swift6),
+            name: "ListEntry"),
         .testTarget(
             name: "Tests",
             dependencies: [
@@ -23,15 +22,6 @@ let package = Package(
             ]),
     ]
 )
-
-let swift6: [SwiftSetting] = [
-    .enableUpcomingFeature("ConciseMagicFile"),
-    .enableUpcomingFeature("ForwardTrailingClosures"),
-    .enableUpcomingFeature("ExistentialAny"),
-    .enableUpcomingFeature("StrictConcurrency"),
-    .enableUpcomingFeature("ImplicitOpenExistentials"),
-    .enableUpcomingFeature("BareSlashRegexLiterals"),
-]
 
 // MARK: - custom package source
 
