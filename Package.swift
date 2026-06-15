@@ -17,7 +17,10 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "ListEntry"),
+            name: "ListEntry",
+            swiftSettings: [
+                .treatWarning("EmbeddedRestrictions", as: .error)
+            ]),
         .testTarget(
             name: "Tests",
             dependencies: [
